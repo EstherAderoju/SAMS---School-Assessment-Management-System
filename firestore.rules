@@ -1,0 +1,115 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email != null && request.auth.token.email.lower() == 'heritage95.ei@gmail.com') ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isStaff() {
+      return isSignedIn() && (
+        isAdmin() ||
+        exists(/databases/$(database)/documents/staff/$(request.auth.uid))
+      );
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // School Configuration: Anyone can read school name/branding; only Admin can edit
+    match /school_config/{configId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Staff Collection
+    match /staff/{staffId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin() || (isSignedIn() && request.auth.uid == staffId);
+    }
+
+    // Class Arms
+    match /class_arms/{armId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Subjects
+    match /subjects/{subjectId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Students Collection
+    match /students/{studentId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Question Bank: Only authorized staff can access and manage questions
+    match /question_bank/{questionId} {
+      allow read, write: if isStaff();
+    }
+
+    // Assessments
+    match /assessments/{assessmentId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Assessment Scores
+    match /assessment_scores/{scoreId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Term Results
+    match /term_results/{resultId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+
+    // Report Cards: Published ones can be viewed by student/parents or staff; writing restricted to staff
+    match /report_cards/{reportId} {
+      allow read: if isSignedIn() && (
+        isStaff() ||
+        (resource.data.isPublished == true)
+      );
+      allow write: if isStaff();
+    }
+
+    // Attendance Records
+    match /attendance_records/{attendanceId} {
+      allow read: if isSignedIn();
+      allow write: if isStaff();
+    }
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "entities": {
+    "SchoolConfig": {
+      "title": "SchoolConfig",
+      "description": "School institutional settings, branding, session, and assessment parameters",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string" },
+        "motto": { "type": "string" },
+        "address": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "secondaryColor": { "type": "string" },
+        "currentSession": { "type": "string" },
+        "currentTerm": { "type": "string" },
+        "rankingEnabled": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["schoolName", "currentSession", "currentTerm"]
+    },
+    "Staff": {
+      "title": "Staff",
+      "description": "Staff user profiles and assigned academic roles",
+      "type": "object",
+      "properties": {
+        "staffId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "phone": { "type": "string" },
+        "assignedArmIds": { "type": "array" },
+        "assignedSubjectIds": { "type": "array" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["staffId", "fullName", "email", "role"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student bio, admission, guardian information, and academic placement",
+      "type": "object",
+      "properties": {
+        "admissionNumber": { "type": "string" },
+        "fullName": { "type": "string" },
+        "gender": { "type": "string" },
+        "dob": { "type": "string" },
+        "currentClassId": { "type": "string" },
+        "currentArmId": { "type": "string" },
+        "currentSession": { "type": "string" },
+        "parentName": { "type": "string" },
+        "parentPhone": { "type": "string" },
+        "parentEmail": { "type": "string" },
+        "address": { "type": "string" },
+        "admissionDate": { "type": "string" },
+        "status": { "type": "string" },
+        "assignedSubjectIds": { "type": "array" },
+        "photoUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["admissionNumber", "fullName", "gender", "currentClassId", "currentArmId", "currentSession", "status"]
+    },
+    "ClassArm": {
+      "title": "ClassArm",
+      "description": "Class arm e.g. JSS 1 Gold or SSS 2 Science A",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "armName": { "type": "string" },
+        "classTeacherId": { "type": "string" },
+        "academicSession": { "type": "string" },
+        "capacity": { "type": "number" }
+      },
+      "required": ["name", "classLevelId", "armName", "academicSession"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Academic subject curriculum specification",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "isCore": { "type": "boolean" },
+        "classLevels": { "type": "array" }
+      },
+      "required": ["code", "name", "category"]
+    },
+    "BankQuestion": {
+      "title": "BankQuestion",
+      "description": "Question bank item across subjects, classes, topics and types",
+      "type": "object",
+      "properties": {
+        "subjectId": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "component": { "type": "string" },
+        "questionType": { "type": "string" },
+        "topic": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "questionText": { "type": "string" },
+        "options": { "type": "array" },
+        "correctAnswer": { "type": "string" },
+        "marks": { "type": "number" },
+        "creatorId": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["subjectId", "classLevelId", "component", "questionType", "topic", "questionText", "correctAnswer", "marks", "creatorId", "status"]
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "CA1, CA2, or Terminal Examination component specification",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "component": { "type": "string" },
+        "assessmentType": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "armId": { "type": "string" },
+        "session": { "type": "string" },
+        "term": { "type": "string" },
+        "assignedTeacherId": { "type": "string" },
+        "maxScore": { "type": "number" },
+        "weightPercent": { "type": "number" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "component", "assessmentType", "subjectId", "classLevelId", "session", "term", "maxScore", "status"]
+    },
+    "ScoreRecord": {
+      "title": "ScoreRecord",
+      "description": "Individual student assessment score entry",
+      "type": "object",
+      "properties": {
+        "assessmentId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "admissionNumber": { "type": "string" },
+        "score": { "type": "number" },
+        "isAbsent": { "type": "boolean" },
+        "isExcused": { "type": "boolean" },
+        "isExempt": { "type": "boolean" },
+        "feedback": { "type": "string" },
+        "recordedBy": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["assessmentId", "studentId", "admissionNumber"]
+    },
+    "TermResult": {
+      "title": "TermResult",
+      "description": "Computed continuous assessment (CA1 + CA2), exam, total, grade and remarks for a student in a subject",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "admissionNumber": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "armId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "session": { "type": "string" },
+        "term": { "type": "string" },
+        "ca1Score": { "type": "number" },
+        "ca2Score": { "type": "number" },
+        "caTotal": { "type": "number" },
+        "examScore": { "type": "number" },
+        "finalScore": { "type": "number" },
+        "grade": { "type": "string" },
+        "remark": { "type": "string" },
+        "teacherComment": { "type": "string" },
+        "status": { "type": "string" },
+        "approvedBy": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["studentId", "admissionNumber", "subjectId", "session", "term", "status"]
+    },
+    "ReportCard": {
+      "title": "ReportCard",
+      "description": "Official student termly academic report card",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "admissionNumber": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "armId": { "type": "string" },
+        "session": { "type": "string" },
+        "term": { "type": "string" },
+        "totalScore": { "type": "number" },
+        "averageScore": { "type": "number" },
+        "classPosition": { "type": "number" },
+        "totalStudentsInArm": { "type": "number" },
+        "classTeacherRemark": { "type": "string" },
+        "principalRemark": { "type": "string" },
+        "promotionStatus": { "type": "string" },
+        "isPublished": { "type": "boolean" },
+        "publishedAt": { "type": "string" }
+      },
+      "required": ["studentId", "admissionNumber", "session", "term", "isPublished"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Daily attendance roster for a class arm",
+      "type": "object",
+      "properties": {
+        "armId": { "type": "string" },
+        "classLevelId": { "type": "string" },
+        "session": { "type": "string" },
+        "term": { "type": "string" },
+        "date": { "type": "string" },
+        "recordedBy": { "type": "string" },
+        "entries": { "type": "array" }
+      },
+      "required": ["armId", "session", "term", "date", "recordedBy"]
+    }
+  },
+  "firestore": {
+    "/school_config/{configId}": {
+      "schema": "SchoolConfig",
+      "description": "School settings, active session, term, branding, and assessment parameters"
+    },
+    "/staff/{staffId}": {
+      "schema": "Staff",
+      "description": "Staff user profiles and assigned academic roles"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Student bio, admission records, and class placement"
+    },
+    "/class_arms/{armId}": {
+      "schema": "ClassArm",
+      "description": "Class sections and assigned class teachers"
+    },
+    "/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "Academic subjects offered"
+    },
+    "/question_bank/{questionId}": {
+      "schema": "BankQuestion",
+      "description": "Shared and teacher-managed question bank repository"
+    },
+    "/assessments/{assessmentId}": {
+      "schema": "Assessment",
+      "description": "CA1, CA2, and terminal examination metadata and questions"
+    },
+    "/assessment_scores/{scoreId}": {
+      "schema": "ScoreRecord",
+      "description": "Marks recorded for individual assessments"
+    },
+    "/term_results/{resultId}": {
+      "schema": "TermResult",
+      "description": "Consolidated subject results with CA1, CA2, Exam, Grade, and remarks"
+    },
+    "/report_cards/{reportId}": {
+      "schema": "ReportCard",
+      "description": "Student termly report cards with positions, remarks, and approval states"
+    },
+    "/attendance_records/{attendanceId}": {
+      "schema": "AttendanceRecord",
+      "description": "Daily student attendance tracking"
+    },
+    "/admins/{adminId}": {
+      "schema": "Staff",
+      "description": "Trusted administrative privilege whitelist mapping"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "SAMS - School Assessment Management System",
+  "description": "Comprehensive Secondary School Assessment Management System for Nigerian secondary schools with continuous assessment, examination grading, termly report cards, and student records.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
